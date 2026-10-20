@@ -1,0 +1,36 @@
+<main class="car-detail-page">
+  <header class="detail-header">
+    <a class="wordmark" routerLink="/cars">autohaus<span>.</span></a>
+    <a class="back-link" routerLink="/cars#ponuka">← Späť na ponuku áut</a>
+  </header>
+
+  @if (car(); as selectedCar) {
+    <article class="car-detail">
+      <div class="detail-image">
+        <img [src]="selectedCar.image" [alt]="selectedCar.imageAlt" />
+        <span class="detail-badge">{{ selectedCar.badge }}</span>
+      </div>
+      <div class="detail-content">
+        <p class="eyebrow">{{ selectedCar.brand }} · {{ selectedCar.body }}</p>
+        <h1>{{ selectedCar.name }}</h1>
+        <p class="detail-price">{{ selectedCar.price | number: '1.0-0' : 'sk-SK' }} €</p>
+        <div class="spec-grid">
+          <div><span>Rok výroby</span><strong>{{ selectedCar.year }}</strong></div>
+          <div>
+            <span>Najazdené</span>
+            <strong>{{ selectedCar.mileage | number: '1.0-0' : 'sk-SK' }} km</strong>
+          </div>
+          <div><span>Palivo</span><strong>{{ selectedCar.fuel }}</strong></div>
+          <div><span>Prevodovka</span><strong>{{ selectedCar.transmission }}</strong></div>
+        </div>
+        <a class="primary-button" [routerLink]="['/cars', selectedCar.id, 'edit']">Upraviť vozidlo</a>
+      </div>
+    </article>
+  } @else {
+    <section class="not-found">
+      <p class="eyebrow">VOZIDLO SA NEPODARILO NÁJSŤ</p>
+      <h1>Toto auto už nie je v ponuke.</h1>
+      <a class="primary-button" routerLink="/cars">Späť na ponuku vozidiel</a>
+    </section>
+  }
+</main>

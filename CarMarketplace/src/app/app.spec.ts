@@ -1,37 +1,34 @@
 import { TestBed } from '@angular/core/testing';
+import { provideRouter, Router } from '@angular/router';
 import { App } from './app';
+import { routes } from './app.routes';
 
 describe('App', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [App],
+      providers: [provideRouter(routes)]
     }).compileComponents();
   });
 
-  it('should create the app', () => {
+  it('should preserve the car marketplace route', async () => {
     const fixture = TestBed.createComponent(App);
-    const app = fixture.componentInstance;
-    expect(app).toBeTruthy();
-  });
-
-  it('should render the marketplace heading', () => {
-    const fixture = TestBed.createComponent(App);
+    await TestBed.inject(Router).navigateByUrl('/cars');
     fixture.detectChanges();
+
     const compiled = fixture.nativeElement as HTMLElement;
     expect(compiled.querySelector('h1')?.textContent).toContain('Nájdite auto');
+    expect(compiled.querySelectorAll('.car-card').length).toBe(3);
   });
 
-  it('should filter the vehicle list by brand', () => {
+  it('should open a car detail from its route', async () => {
     const fixture = TestBed.createComponent(App);
-    fixture.detectChanges();
-    const compiled = fixture.nativeElement as HTMLElement;
-    const brandFilter = compiled.querySelector('select[name="brand"]') as HTMLSelectElement;
-
-    brandFilter.value = 'BMW';
-    brandFilter.dispatchEvent(new Event('change'));
+    const router = TestBed.inject(Router);
+    await router.navigateByUrl('/cars/1');
     fixture.detectChanges();
 
-    expect(compiled.querySelectorAll('.car-card').length).toBe(1);
-    expect(compiled.querySelector('.car-card h3')?.textContent).toContain('BMW');
+    const detail = fixture.nativeElement as HTMLElement;
+    expect(detail.querySelector('h1')?.textContent).toContain('3 Series 320d M Sport');
+    expect(detail.textContent).toMatch(/32[\s\u00a0]?900\s*€/);
   });
 });

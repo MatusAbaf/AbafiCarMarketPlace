@@ -1,0 +1,83 @@
+<main class="car-form-page">
+  <header class="form-header">
+    <a class="wordmark" routerLink="/cars">autohaus<span>.</span></a>
+    <a class="back-link" routerLink="/cars#ponuka">← Späť na ponuku áut</a>
+  </header>
+
+  @if (!editing || car) {
+    <section class="form-content">
+      <p class="eyebrow">{{ editing ? 'AKTUALIZUJTE INFORMÁCIE' : 'ROZŠÍRTE PONUKU' }}</p>
+      <h1>{{ editing ? 'Upraviť vozidlo' : 'Pridať vozidlo' }}<span>.</span></h1>
+      <p class="intro">Vyplňte základné informácie o vozidle.</p>
+
+      <form #carForm="ngForm" (ngSubmit)="save()">
+        <div class="form-row">
+          <label>
+            Značka
+            <input type="text" name="brand" [(ngModel)]="value.brand" required maxlength="60" placeholder="Napríklad BMW" />
+          </label>
+          <label>
+            Model a výbava
+            <input type="text" name="name" [(ngModel)]="value.name" required maxlength="100" placeholder="Napríklad 320d M Sport" />
+          </label>
+        </div>
+        <div class="form-row">
+          <label>
+            Typ karosérie
+            <input type="text" name="body" [(ngModel)]="value.body" required maxlength="40" placeholder="Napríklad Sedan" />
+          </label>
+          <label>
+            Cena (€)
+            <input type="number" name="price" [(ngModel)]="value.price" required min="1" step="1" />
+          </label>
+        </div>
+        <div class="form-row">
+          <label>
+            Rok výroby
+            <input type="number" name="year" [(ngModel)]="value.year" required min="1900" [max]="9999" step="1" />
+          </label>
+          <label>
+            Najazdené (km)
+            <input type="number" name="mileage" [(ngModel)]="value.mileage" required min="0" step="1" />
+          </label>
+        </div>
+        <div class="form-row">
+          <label>
+            Palivo
+            <input type="text" name="fuel" [(ngModel)]="value.fuel" required maxlength="40" placeholder="Napríklad Diesel" />
+          </label>
+          <label>
+            Prevodovka
+            <input type="text" name="transmission" [(ngModel)]="value.transmission" required maxlength="40" placeholder="Napríklad Automat" />
+          </label>
+        </div>
+        <div class="form-row">
+          <label>
+            Označenie
+            <input type="text" name="badge" [(ngModel)]="value.badge" required maxlength="40" placeholder="Napríklad TOP VÝBER" />
+          </label>
+          <label>
+            URL fotografie
+            <input type="url" name="image" [(ngModel)]="value.image" required maxlength="500" placeholder="https://..." />
+          </label>
+        </div>
+        <label>
+          Popis fotografie
+          <input type="text" name="imageAlt" [(ngModel)]="value.imageAlt" required maxlength="160" placeholder="Stručný popis vozidla na fotografii" />
+        </label>
+        <div class="form-actions">
+          <a class="cancel-button" routerLink="/cars#ponuka">Zrušiť</a>
+          <button class="primary-button" type="submit" [disabled]="carForm.invalid">
+            {{ editing ? 'Uložiť zmeny' : 'Pridať vozidlo' }}
+          </button>
+        </div>
+      </form>
+    </section>
+  } @else {
+    <section class="not-found">
+      <p class="eyebrow">VOZIDLO SA NEPODARILO NÁJSŤ</p>
+      <h1>Toto auto už nie je v ponuke.</h1>
+      <a class="primary-button" routerLink="/cars">Späť na ponuku vozidiel</a>
+    </section>
+  }
+</main>
